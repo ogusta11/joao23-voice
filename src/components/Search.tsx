@@ -10,16 +10,82 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { users, currentUser, followUser, unfollowUser } = useUser();
 
-  const filtere
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div className="mb-6">
+        <Input
+          type="text"
+          placeholder="Buscar usuários..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full"
+        />
+      </div>
 
-Se houver conhecimento, contexto ou instruções personalizadas que você deseja incluir em cada edição neste projeto, defina-o abaixo.
+      <div className="space-y-4">
+        {filteredUsers.map((user) => (
+          <div
+            key={user.id}
+            className="bg-white rounded-lg shadow-md p-4 flex items-center justify-between"
+          >
+            <div className="flex items-center space-x-4">
+              <Avatar className="w-12 h-12">
+                <img
+                  src={user.profileImage}
+                  alt={user.username}
+                  className="object-cover"
+                />
+              </Avatar>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="font-semibold">{user.username}</span>
+                  {user.isVerified && (
+                    <Badge variant="secondary" className="verified-badge">
+                      Verificado
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-sm text-gray-500">{user.bio}</p>
+                <div className="text-sm text-gray-500">
+                  {user.followers.length} seguidores • {user.following.length}{" "}
+                  seguindo
+                </div>
+              </div>
+            </div>
 
-<lov-actions>
-<lov-knowledge>
-</lov-actions>
+            {currentUser && currentUser.id !== user.id && (
+              <Button
+                variant={
+                  currentUser.following.includes(user.id)
+                    ? "outline"
+                    : "default"
+                }
+                onClick={() =>
+                  currentUser.following.includes(user.id)
+                    ? unfollowUser(user.id)
+                    : followUser(user.id)
+                }
+              >
+                {currentUser.following.includes(user.id)
+                  ? "Deixar de Seguir"
+                  : "Seguir"}
+              </Button>
+            )}
+          </div>
+        ))}
 
-Como seu projeto requer funcionalidade de backend para salvar informações de perfil, posts, comentários, curtidas, seguidores e dados de administrador, você pode usar o menu Supabase no canto superior direito para conectar seu projeto ao Supabase.
-<lov-actions>
-<lov-message-prompt message="Conte-me mais sobre o Supabase">Saiba mais sobre o Supabase</lov-message-prompt>
-</lov-actions>
+        {filteredUsers.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            Nenhum usuário encontrado
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Search;
