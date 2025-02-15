@@ -5,14 +5,23 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { users, currentUser, followUser, unfollowUser } = useUser();
+  const navigate = useNavigate();
 
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleMessageClick = (userId: string) => {
+    const tabsElement = document.querySelector('[role="tablist"]') as HTMLElement;
+    const messagesTab = tabsElement?.querySelector('[value="messages"]') as HTMLElement;
+    messagesTab?.click();
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -58,22 +67,31 @@ const Search = () => {
             </div>
 
             {currentUser && currentUser.id !== user.id && (
-              <Button
-                variant={
-                  currentUser.following.includes(user.id)
-                    ? "outline"
-                    : "default"
-                }
-                onClick={() =>
-                  currentUser.following.includes(user.id)
-                    ? unfollowUser(user.id)
-                    : followUser(user.id)
-                }
-              >
-                {currentUser.following.includes(user.id)
-                  ? "Deixar de Seguir"
-                  : "Seguir"}
-              </Button>
+              <div className="flex space-x-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleMessageClick(user.id)}
+                >
+                  <MessageCircle className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant={
+                    currentUser.following.includes(user.id)
+                      ? "outline"
+                      : "default"
+                  }
+                  onClick={() =>
+                    currentUser.following.includes(user.id)
+                      ? unfollowUser(user.id)
+                      : followUser(user.id)
+                  }
+                >
+                  {currentUser.following.includes(user.id)
+                    ? "Deixar de Seguir"
+                    : "Seguir"}
+                </Button>
+              </div>
             )}
           </div>
         ))}

@@ -41,3 +41,17 @@ export interface Notification {
   read: boolean;
   createdAt: string;
 }
+
+export interface Message {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  content: string;
+  createdAt: string;
+}
+
+export interface Chat {
+  userId: string;
+  lastMessage: Message;
+  unreadCount: number;
+}
