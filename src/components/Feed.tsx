@@ -35,6 +35,12 @@ const Feed = () => {
     <div className="max-w 2xl mx-auto space-y-8">
       {currentUser && (
         <form onSubmit={handleSubmitPost} className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Avatar className="w-8 h-8">
+              <img src={currentUser.profileImage} alt={currentUser.username} className="object-cover" />
+            </Avatar>
+            <span className="font-medium text-foreground">@{currentUser.username}</span>
+          </div>
           <Textarea
             value={newPost}
             onChange={(e) => setNewPost(e.target.value)}
@@ -47,7 +53,7 @@ const Feed = () => {
 
       <div className="space-y-6">
         {posts.map((post) => (
-          <div key={post.id} className="bg-white rounded-lg shadow-md p-6 post-transition">
+          <div key={post.id} className="bg-secondary rounded-lg shadow-md p-6 post-transition">
             <div className="flex items-start justify-between">
               <div className="flex items-start space-x-3">
                 <Avatar className="w-10 h-10">
@@ -55,14 +61,14 @@ const Feed = () => {
                 </Avatar>
                 <div>
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold">{post.username}</span>
+                    <span className="font-semibold text-foreground">@{post.username}</span>
                     {post.isVerified && (
                       <Badge variant="secondary" className="verified-badge">
                         Verificado
                       </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">
                     {format(new Date(post.createdAt), "d MMM, yyyy")}
                   </p>
                 </div>
@@ -79,7 +85,7 @@ const Feed = () => {
               )}
             </div>
 
-            <p className="mt-4">{post.content}</p>
+            <p className="mt-4 text-foreground">{post.content}</p>
 
             <div className="mt-4 flex items-center space-x-4">
               <Button
@@ -93,13 +99,13 @@ const Feed = () => {
                 className={
                   post.likes.includes(currentUser?.id || "")
                     ? "text-red-500"
-                    : "text-gray-500"
+                    : "text-muted-foreground"
                 }
               >
                 <Heart className="h-5 w-5 mr-1" />
                 {post.likes.length}
               </Button>
-              <div className="flex items-center text-gray-500">
+              <div className="flex items-center text-muted-foreground">
                 <MessageCircle className="h-5 w-5 mr-1" />
                 {post.comments.length}
               </div>
@@ -127,7 +133,7 @@ const Feed = () => {
             {post.comments.length > 0 && (
               <div className="mt-4 space-y-4">
                 {post.comments.map((comment) => (
-                  <div key={comment.id} className="bg-gray-50 rounded-lg p-4">
+                  <div key={comment.id} className="bg-background/50 rounded-lg p-4">
                     <div className="flex items-start space-x-3">
                       <Avatar className="w-8 h-8">
                         <img
@@ -138,17 +144,17 @@ const Feed = () => {
                       </Avatar>
                       <div className="flex-1">
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold">{comment.username}</span>
+                          <span className="font-semibold text-foreground">@{comment.username}</span>
                           {comment.isVerified && (
                             <Badge variant="secondary" className="verified-badge">
                               Verificado
                             </Badge>
                           )}
                         </div>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {format(new Date(comment.createdAt), "d MMM, yyyy")}
                         </p>
-                        <p className="mt-1">{comment.content}</p>
+                        <p className="mt-1 text-foreground">{comment.content}</p>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -160,7 +166,7 @@ const Feed = () => {
                           className={
                             comment.likes.includes(currentUser?.id || "")
                               ? "text-red-500 mt-2"
-                              : "text-gray-500 mt-2"
+                              : "text-muted-foreground mt-2"
                           }
                         >
                           <Heart className="h-4 w-4 mr-1" />
