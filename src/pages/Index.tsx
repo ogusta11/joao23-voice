@@ -1,13 +1,43 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Feed from "@/components/Feed";
+import Profile from "@/components/Profile";
+import Notifications from "@/components/Notifications";
+import { UserProvider } from "@/contexts/UserContext";
+import { PostProvider } from "@/contexts/PostContext";
+import Search from "@/components/Search";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <UserProvider>
+      <PostProvider>
+        <div className="min-h-screen bg-background">
+          <div className="container mx-auto px-4 py-8">
+            <h1 className="text-4xl font-bold text-primary mb-8 text-center">João 23 - Comunidade</h1>
+            <Tabs defaultValue="feed" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 mb-8">
+                <TabsTrigger value="feed">Feed</TabsTrigger>
+                <TabsTrigger value="profile">Perfil</TabsTrigger>
+                <TabsTrigger value="notifications">Notificações</TabsTrigger>
+                <TabsTrigger value="search">Buscar</TabsTrigger>
+              </TabsList>
+              <TabsContent value="feed">
+                <Feed />
+              </TabsContent>
+              <TabsContent value="profile">
+                <Profile />
+              </TabsContent>
+              <TabsContent value="notifications">
+                <Notifications />
+              </TabsContent>
+              <TabsContent value="search">
+                <Search />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </PostProvider>
+    </UserProvider>
   );
 };
 
